@@ -28,7 +28,7 @@ extension String {
         return true
     }
     
-   func isValidPassword() -> Bool {
+    func isValidPassword() -> Bool {
         if self.count < 8  {
             return false
         }
@@ -36,7 +36,7 @@ extension String {
     }
     
     func isValidPhone() -> Bool {
-        if self.count < 10 {
+        if self.count != 10 {
             return false
         }
         return true

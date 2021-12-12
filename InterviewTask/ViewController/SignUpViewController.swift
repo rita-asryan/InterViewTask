@@ -9,20 +9,23 @@
 import UIKit
 
 class SignUpViewController: UIViewController {
-    @IBOutlet weak var keepTheGlowLabel: UILabel!
-    @IBOutlet weak var phoneTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var validateInfoLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
     
-    var param = RequestUserAccount()
+    // MARK: - IBOutlet
+    @IBOutlet private weak var phoneTextField: UITextField!
+    @IBOutlet private weak var emailTextField: UITextField!
+    @IBOutlet private weak var passwordTextField: UITextField!
+    @IBOutlet private weak var nameTextField: UITextField!
+    @IBOutlet private weak var validateInfoLabel: UILabel!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
+    // MARK: - Properties
+    private var param = RequestUserAccount()
+    
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextField()
-        configureUI()
         addTapToHideKeyboard()
     }
     
@@ -35,10 +38,45 @@ class SignUpViewController: UIViewController {
         removeForKeyboardNotifications()
     }
     
-    func isValidData() -> Bool {
+    // MARK: - IBActions
+    @IBAction private func SignUpButtonAction(_ sender: UIButton) {
+        if isValidData() {
+            activityIndicator.startAnimating()
+            DataContainer.sharedInstance.register(with: param) { (loggedIn, response, sessionResponse) in
+                self.activityIndicator.stopAnimating()
+                if sessionResponse?.loggedIn ?? false {
+                    let alert = self.showAlert(text: "you are successfully registered")
+                    self.show(alert, sender: nil)
+                } else if sessionResponse?.errors?[0] != nil{
+                    let alert = self.showAlert(text: sessionResponse?.errors?[0] ?? "")
+                    self.show(alert, sender: nil)
+                }
+            }
+        }
+    }
+    @IBAction private func LoginButtonAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - Methods
+    private func configureTextField() {
+        nameTextField.setPlaceholder(text: "Name", color: UIColor.textFieldColor)
+        emailTextField.setPlaceholder(text: "Email", color:  UIColor.textFieldColor)
+        passwordTextField.setPlaceholder(text: "Password", color: UIColor.textFieldColor)
+        phoneTextField.setPlaceholder(text: "Phone number", color:  UIColor.textFieldColor)
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        phoneTextField.delegate = self
+    }
+    
+    private func isValidData() -> Bool {
         if !(emailTextField.text?.isValidEmail() ?? false) || emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             emailTextField.becomeFirstResponder()
-            validateInfoLabel.text = "enter valid email"
+            validateInfoLabel.text = "Please enter a valid email"
             return false
         }
         if phoneTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || (phoneTextField.text ?? "").count != 10 {
@@ -55,45 +93,14 @@ class SignUpViewController: UIViewController {
         return true
     }
     
-    @IBAction func SignUpButtonAction(_ sender: UIButton) {
-        if isValidData() {
-            
-            DataContainer.sharedInstance.postAuth(with: param) { (loggedIn, response, error) in
-                print(response)
-                if loggedIn {
-                    let alert = UIAlertController(title: "log in ", message: nil, preferredStyle: .actionSheet)
-                    self.show(alert, sender: nil)
-                } else {
-                    let alert = UIAlertController(title: " does not register ", message: nil, preferredStyle: .actionSheet)
-                                       self.show(alert, sender: nil)
-                }
-            }
-        }
+    private func showAlert(text: String) -> UIAlertController {
+        let alert = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        return alert
     }
     
-    @IBAction func LoginButtonAction(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
-        self.present(vc, animated: true, completion: nil)
-        print("sign in")
-    }
-    func configureTextField() {
-        nameTextField.setPlaceholder(text: "Name", color: UIColor.textFieldColor)
-        emailTextField.setPlaceholder(text: "Email", color:  UIColor.textFieldColor)
-        passwordTextField.setPlaceholder(text: "Password", color: UIColor.textFieldColor)
-        phoneTextField.setPlaceholder(text: "Phone number", color:  UIColor.textFieldColor)
-        nameTextField.delegate = self
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        phoneTextField.delegate = self
-    }
-    
-    func configureUI() {
-        let gradient = CAGradientLayer.getGradientLayer(bounds: keepTheGlowLabel.bounds)
-        keepTheGlowLabel.textColor = UIColor.gradientColor(bounds: keepTheGlowLabel.bounds, gradientLayer: gradient)
-    }
-    
-    func addTapToHideKeyboard() {
+    private func addTapToHideKeyboard() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -104,33 +111,32 @@ class SignUpViewController: UIViewController {
     }
     
     //MARK: - Keyboard
-    func registerForKeyboardNotifications() {
+    private func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    func removeForKeyboardNotifications() {
+    private func removeForKeyboardNotifications() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        
     }
     
-    
-    @objc func keyboardWasShow(aNotification: Notification) {
+    @objc private func keyboardWasShow(aNotification: Notification) {
         guard let keyboardFrameValue = aNotification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardFrameValue.cgRectValue
         scrollView.contentInset.bottom = keyboardFrame.size.height
         scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
     
-    @objc func keyboardWillBeHidden(aNotification: Notification){
+    @objc private func keyboardWillBeHidden(aNotification: Notification){
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == nameTextField {

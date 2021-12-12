@@ -11,16 +11,14 @@ import UIKit
 class TextField: UITextField {
     
     // MARK: - View LifeCyle
-       override func awakeFromNib() {
-           super.awakeFromNib()
-           textFieldApearance()
-       }
-       
-       // MARK: - Methods
-       private func textFieldApearance() {
-           self.layer.cornerRadius = 4
-           clipsToBounds = true
-       }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textFieldApearance()
+    }
     
-    
+    // MARK: - Methods
+    private func textFieldApearance() {
+        self.layer.cornerRadius = 4
+        clipsToBounds = true
+    }
 }
