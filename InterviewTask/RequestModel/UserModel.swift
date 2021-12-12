@@ -8,53 +8,23 @@
 
 import UIKit
 
-class UserModel: BaseModel {
-    
-    // MARK: - Keys
-    static var idKey = "id"
-    static var acceptsTextsKey = "acceptsTexts"
-    static var feelingsChosenKey = "feelingsChosen"
-    static var emailKey = "email"
-    static var nameKey = "name"
-    static var phoneNumberKey = "phoneNumber"
-    
-    // MARK: - Properties
-    var id: Int?
-    var acceptsText: Bool?
-    var feelingsChosen: Bool?
-    var email: String?
-    var name: String?
-    var phoneNumber: String?
-    var sessionResponse : SessionResponse?
-    
-    override init(dictionary: [String : AnyObject]) {
-        super.init(dictionary: dictionary)
-        id = intFromObject(dictionary[UserModel.idKey])
-        acceptsText = boolFromObject(dictionary[UserModel.acceptsTextsKey])
-        feelingsChosen = boolFromObject(dictionary[UserModel.feelingsChosenKey])
-        email = stringFromObject(dictionary[UserModel.emailKey])
-        name = stringFromObject(dictionary[UserModel.nameKey] )
-        phoneNumber = stringFromObject(dictionary[UserModel.phoneNumberKey])
-    }
+struct UserModel: Codable {
+    var id: Int!
+    var acceptsText: Bool!
+    var feelingsChosen: Bool!
+    var email: String!
+    var name: String!
+    var phoneNumber: String!
 }
 
-class SessionResponse: BaseModel {
-    // MARK: - Keys
-    static var status = "status"
-    static var errors = "errors"
-    static var loggedIn = "loggedIn"
+struct SessionResponse: Codable {
+    var status: String!
+    var errors: [String]!
+    var loggedIn: Bool!
     
-    // MARK: - Properties
-    var status: String?
-    var errors: [String]?
-    var loggedIn: Bool?
-    
-    override init(dictionary: [String : AnyObject]) {
-        super.init(dictionary: dictionary)
-        //        let result = dictionary["sessionsResponse"] as? [String: AnyObject]
-        status = stringFromObject(dictionary[SessionResponse.status])
-        errors = stringsArrayFromObject(dictionary[SessionResponse.errors])
-        loggedIn = boolFromObject(dictionary[SessionResponse.loggedIn])
-        
-    }
+}
+
+struct Sessions: Codable {
+    var sessionsResponse: SessionResponse!
+    var user: UserModel!
 }

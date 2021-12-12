@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextField()
-        addTapToHideKeyboard()
+        hideKeyboardWhenTappedAround()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -60,14 +60,6 @@ class LoginViewController: UIViewController {
         }
         return true
     }
-    private func addTapToHideKeyboard() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
     
     @IBAction private func openRegisterPageAction(_ sender: UIButton) {
 //        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
@@ -81,14 +73,15 @@ class LoginViewController: UIViewController {
     @IBAction private func signInAction(_ sender: UIButton) {
         if isValidData() {
             activityIndicator.startAnimating()
-            DataContainer.sharedInstance.login(with: param) { (loggedIn, response, sessionResponse) in
+            DataContainer.sharedInstance.login(with: param) { (response, user) in
                 self.activityIndicator.stopAnimating()
-                if sessionResponse?.loggedIn  ?? false {
+                if response?.loggedIn  ?? false {
                     self.showAlert(text: "you are successfully logged in")
                 }
-                if sessionResponse?.errors?[0] != nil, let err = sessionResponse?.errors?[0] {
+                if response?.errors?[0] != nil, let err = response?.errors?[0] {
                     self.showAlert(text: err)
                 }
+                print(user ?? [:])
             }
         }
     }

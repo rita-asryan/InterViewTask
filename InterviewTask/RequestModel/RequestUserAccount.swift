@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestUserAccount: BaseModel {
+class RequestUserAccount {
     
     // MARK: - Properties
     var name: String = ""

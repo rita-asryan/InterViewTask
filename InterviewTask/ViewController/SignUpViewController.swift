@@ -26,7 +26,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextField()
-        addTapToHideKeyboard()
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,16 +98,6 @@ class SignUpViewController: UIViewController {
         let action = UIAlertAction(title: "ok", style: .cancel, handler: nil)
         alert.addAction(action)
         return alert
-    }
-    
-    private func addTapToHideKeyboard() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
     }
     
     //MARK: - Keyboard

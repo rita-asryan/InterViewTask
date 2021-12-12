@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		2F4EC5EBA86C6BA808FAAFFD /* Pods_InterviewTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F295C7EBF0E82DC3FEAF87CE /* Pods_InterviewTask.framework */; };
 		5D4604892765DD02008D6E3D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4604882765DD02008D6E3D /* LoginViewController.swift */; };
-		5D46048B2765E2C0008D6E3D /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46048A2765E2C0008D6E3D /* BaseModel.swift */; };
 		5D4604922765E6B3008D6E3D /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4604912765E6B3008D6E3D /* Constant.swift */; };
 		5D4604942765E7AE008D6E3D /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4604932765E7AE008D6E3D /* UserModel.swift */; };
 		5D46049B27663E4F008D6E3D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D46048C2765E5E2008D6E3D /* Roboto-Regular.ttf */; };
 		5D46049C27663E4F008D6E3D /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D46049A27663E17008D6E3D /* Roboto-Light.ttf */; };
+		5D59EED1276682780023EFE2 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D59EED0276682780023EFE2 /* UIViewController.swift */; };
 		5DC9BF2B276399720029D36F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC9BF2A276399720029D36F /* AppDelegate.swift */; };
 		5DC9BF2D276399720029D36F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC9BF2C276399720029D36F /* SceneDelegate.swift */; };
 		5DC9BF2F276399720029D36F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC9BF2E276399720029D36F /* SignUpViewController.swift */; };
@@ -32,11 +32,11 @@
 /* Begin PBXFileReference section */
 		230A6D889D2A6946C9AAD78C /* Pods-InterviewTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InterviewTask.debug.xcconfig"; path = "Target Support Files/Pods-InterviewTask/Pods-InterviewTask.debug.xcconfig"; sourceTree = "<group>"; };
 		5D4604882765DD02008D6E3D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		5D46048A2765E2C0008D6E3D /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		5D46048C2765E5E2008D6E3D /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		5D4604912765E6B3008D6E3D /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		5D4604932765E7AE008D6E3D /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		5D46049A27663E17008D6E3D /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		5D59EED0276682780023EFE2 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		5DC9BF27276399720029D36F /* InterviewTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InterviewTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DC9BF2A276399720029D36F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DC9BF2C276399720029D36F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +91,7 @@
 				5DC9BF4E276461EC0029D36F /* UIColor.swift */,
 				5DC9BF432763ABC90029D36F /* String.swift */,
 				5DC9BF452763ADC30029D36F /* UITextField.swift */,
+				5D59EED0276682780023EFE2 /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -98,7 +99,6 @@
 		5D46048F2765E665008D6E3D /* RequestModel */ = {
 			isa = PBXGroup;
 			children = (
-				5D46048A2765E2C0008D6E3D /* BaseModel.swift */,
 				5DC9BF4C2763D0BA0029D36F /* RequestUserAccount.swift */,
 				5D4604932765E7AE008D6E3D /* UserModel.swift */,
 			);
@@ -296,9 +296,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D59EED1276682780023EFE2 /* UIViewController.swift in Sources */,
 				5DC9BF2F276399720029D36F /* SignUpViewController.swift in Sources */,
 				5DC9BF462763ADC30029D36F /* UITextField.swift in Sources */,
-				5D46048B2765E2C0008D6E3D /* BaseModel.swift in Sources */,
 				5DC9BF2B276399720029D36F /* AppDelegate.swift in Sources */,
 				5DC9BF492763C8300029D36F /* TextField.swift in Sources */,
 				5D4604942765E7AE008D6E3D /* UserModel.swift in Sources */,

@@ -35,28 +35,22 @@ class ServerAPI {
                                method: .post,
                                parameters: reqParams,
                                encoding: JSONEncoding.default,
-                               headers:  ["Accept": "application/json"]).responseJSON { response in
-                                switch response.result {
-                                case .success(let response) :
-                                    if let responseDic = response as? [String : AnyObject] {
-                                        let session = responseDic["sessionsResponse"] as? [String: AnyObject]
-                                        let err  = SessionResponse(dictionary: session ?? [:])
-                                        if  let form = responseDic["user"]  as? [String: AnyObject] {
-                                            let dic = UserModel(dictionary:(form))
-                                            completion(true, dic, err)
-                                        } else {
-                                            completion(false, nil, err)
+                               headers:  ["Accept": "application/json"]).validate().responseJSON { response in
+                                if let data = response.data {
+                                    do {
+                                        let result = try JSONDecoder().decode(Sessions.self, from: data)
+                                        if let results = result.sessionsResponse {
+                                            let dic = result.user
+                                            completion(results.loggedIn, dic, results)
                                         }
-                                    }
-                                case .failure(let errorValue):
-                                    print(errorValue.localizedDescription)
+                                    } catch let err{ print(err)}
                                 }
         }
     }
     
     
     // MARK: - User Sign In Request
-    func login(with param: RequestUserAccount,  completion: @escaping (Bool, UserModel?, SessionResponse?)->()) {
+    func login(with param: RequestUserAccount,  completion: @escaping (SessionResponse?, UserModel?)->()) {
         var reqParams = params
         reqParams["email"] = param.email
         reqParams["password"] = param.password
@@ -65,23 +59,15 @@ class ServerAPI {
                                method: .post,
                                parameters: reqParams,
                                encoding: JSONEncoding.default,
-                               headers:  ["Accept": "application/json"]).responseJSON { response in
-                                print(response)
-                                switch response.result {
-                                case .success(let response):
-                                    if let responseDic = response as? [String : AnyObject] {
-                                        var err: SessionResponse?
-                                        if  let session = responseDic["sessionsResponse"] as? [String: AnyObject] {
-                                            err  = SessionResponse(dictionary: session)
+                               headers:  ["Accept": "application/json"]).validate().responseJSON { response in
+                                if let data = response.data {
+                                    do {
+                                        let result = try JSONDecoder().decode(Sessions.self, from: data)
+                                        if let results = result.sessionsResponse {
+                                            let dic = result.user
+                                            completion(results, dic)
                                         }
-                                        if  let form = responseDic["user"]  as? [String: AnyObject] {
-                                            let dic = UserModel(dictionary:form)
-                                            completion(true, dic, err)                                        } else {
-                                            completion(false, nil, err)
-                                        }
-                                    }
-                                case .failure(let errorValue):
-                                    print(errorValue.localizedDescription)
+                                    } catch let err{ print(err)}
                                 }
         }
     }
