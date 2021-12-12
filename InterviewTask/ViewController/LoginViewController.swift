@@ -70,9 +70,10 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction private func openRegisterPageAction(_ sender: UIButton) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "SignUpViewController")
-        present(vc, animated: true, completion: nil)
+//        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyBoard.instantiateViewController(withIdentifier: "SignUpViewController")
+//        present(vc, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
     }
     
